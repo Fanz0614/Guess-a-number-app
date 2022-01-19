@@ -8,11 +8,29 @@ import colors from '../constants/color'
 
 export const Screen = () => {
     const [enterValue, setEnterValue] = useState('')
+    const [valueConfirm, setValueConfirm] = useState(false)
+    const [selectedNumber, setSelectedNumber] = useState()
     const numberInputHandler = (value) => {
         setEnterValue(value.replace(/[^0-9]/g, ''))
     }
     const dismissKeyBoard = () => {
         Keyboard.dismiss()
+    }
+    const resetInputHandler = () => {
+        setEnterValue('')
+    }
+    const confirmInputHandler = () => {
+        const choosenNum = parseInt(enterValue)
+        if (choosenNum === NaN || choosenNum < 0 || choosenNum > 99) {
+            return;
+        }
+        setValueConfirm(true)
+        setSelectedNumber(parseInt(enterValue))
+        setEnterValue('')
+    }
+    let valueConfirmed;
+    if (valueConfirm) {
+        valueConfirmed = <Text>Choosen number: {selectedNumber}</Text>
     }
     return (
         <TouchableWithoutFeedback onPress={dismissKeyBoard}>
@@ -29,10 +47,11 @@ export const Screen = () => {
                         keyboardType='number-pad'
                         maxLength={2} />
                     <View style={styles.buttonContainer}>
-                        <Button title='Reset' color={colors.accent} />
-                        <Button title='Confirm' color={colors.primary} />
+                        <Button title='Reset' color={colors.accent} onPress={resetInputHandler} />
+                        <Button title='Confirm' color={colors.primary} onPress={confirmInputHandler} />
                     </View>
                 </Card>
+                {valueConfirmed}
             </View>
         </TouchableWithoutFeedback>
     )
