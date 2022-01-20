@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Button, Keyboard, TouchableWithoutFeedback, Alert } from 'react-native';
 
-import { Card } from '../components';
+import { Card, NumberContainer } from '../components';
 import { Input } from '../components/Input';
 
 import colors from '../constants/color'
@@ -18,6 +18,7 @@ export const Screen = () => {
     }
     const resetInputHandler = () => {
         setEnterValue('')
+        setValueConfirm(false)
     }
     const confirmInputHandler = () => {
         const choosenNum = parseInt(enterValue)
@@ -31,7 +32,12 @@ export const Screen = () => {
     }
     let valueConfirmed;
     if (valueConfirm) {
-        valueConfirmed = <Text>Choosen number: {selectedNumber}</Text>
+        valueConfirmed =
+            <Card style={styles.summaryContainer}>
+                <Text>Choosen number: </Text>
+                <NumberContainer>{selectedNumber}</NumberContainer>
+                <Button title='Startsd game' />
+            </Card>
     }
     return (
         <TouchableWithoutFeedback onPress={dismissKeyBoard}>
@@ -82,5 +88,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingHorizontal: 15,
         width: '80%'
+    },
+    summaryContainer: {
+        marginTop: 10
     }
 })
